@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вкусно и Просто - Кулинарные рецепты</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #e74c3c;
+            --secondary: #2c3e50;
+            --accent: #f39c12;
+            --light: #f9f9f9;
+            --dark: #333;
+            --gray: #95a5a6;
+            --shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav a:hover, nav a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .search-bar {
+            display: flex;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            width: 300px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 12px 20px;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            background: var(--accent);
+            border: none;
+            color: white;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .search-bar button:hover {
+            background: #e67e22;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 100px 20px;
+            margin-bottom: 40px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* Categories */
+        .section-title {
+            text-align: center;
+            margin: 40px 0 30px;
+            font-size: 2rem;
+            color: var(--secondary);
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--primary);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .category-img {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .category-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .category-content h3 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        /* Recipes */
+        .recipes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .recipe-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .recipe-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .recipe-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .recipe-time {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .recipe-content {
+            padding: 20px;
+        }
+
+        .recipe-content h3 {
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .recipe-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .recipe-desc {
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        /* Recipe Detail */
+        .recipe-detail {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 50px;
+        }
+
+        .recipe-detail.active {
+            display: block;
+        }
+
+        .recipe-hero {
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .recipe-hero-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 30px;
+        }
+
+        .recipe-hero-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .recipe-info {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .recipe-info span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .recipe-body {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .ingredients h3, .instructions h3 {
+            margin-bottom: 20px;
+            color: var(--secondary);
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .ingredients ul {
+            list-style: none;
+        }
+
+        .ingredients li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .ingredients li:before {
+            content: '•';
+            color: var(--primary);
+            font-size: 1.5rem;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+
+        .instructions ol {
+            padding-left: 25px;
+        }
+
+        .instructions li {
+            margin-bottom: 15px;
+        }
+
+        .back-btn {
+            margin: 20px 0;
+            background: var(--gray);
+        }
+
+        .back-btn:hover {
+            background: #7f8c8d;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 50px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .recipe-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .search-bar {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 60px 20px;
+            }
+            
+            .categories, .recipes {
+                grid-template-columns: 1fr;
+            }
+            
+            .recipe-hero-content h2 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-utensils"></i>
+                    <span>Вкусно и Просто</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">Главная</a></li>
+                        <li><a href="#">Рецепты</a></li>
+                        <li><a href="#">Категории</a></li>
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Контакты</a></li>
+                    </ul>
+                </nav>
+                <div class="search-bar">
+                    <input type="text" placeholder="Поиск рецептов...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Кулинарные рецепты на каждый день</h1>
+            <p>Откройте для себя тысячи вкусных и простых рецептов для завтрака, обеда и ужина. Готовьте с удовольствием!</p>
+            <a href="#" class="btn">Начать готовить</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Categories -->
+        <h2 class="section-title">Популярные категории</h2>
+        <div class="categories">
+            <div class="category-card" data-category="breakfast">
+                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1551782450-17144efb9c50?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="category-content">
+                    <h3>Завтраки</h3>
+                    <p>45 рецептов</p>
+                </div>
+            </div>
+            <div class="category-card" data-category="soups">
+                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1547592166-23ac45744acd?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="category-content">
+                    <h3>Супы</h3>
+                    <p>32 рецепта</p>
+                </div>
+            </div>
+            <div class="category-card" data-category="main">
+                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="category-content">
+                    <h3>Основные блюда</h3>
+                    <p>78 рецептов</p>
+                </div>
+            </div>
+            <div class="category-card" data-category="desserts">
+                <div class="category-img" style="background-image: url('https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')"></div>
+                <div class="category-content">
+                    <h3>Десерты</h3>
+                    <p>56 рецептов</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Featured Recipes -->
+        <h2 class="section-title">Популярные рецепты</h2>
+        <div class="recipes">
+            <div class="recipe-card" data-id="1">
+                <div class="recipe-img" style="background-image: url('https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
+                    <div class="recipe-time"><i class="far fa-clock"></i> 30 мин</div>
+                </div>
+                <div class="recipe-content">
+                    <h3>Паста Карбонара</h3>
+                    <div class="recipe-meta">
+                        <span><i class="fas fa-utensils"></i> Основные блюда</span>
+                        <span><i class="fas fa-fire"></i> Средняя сложность</span>
+                    </div>
+                    <p class="recipe-desc">Классическая итальянская паста с беконом, сыром и яйцом.</p>
+                    <a href="#" class="btn recipe-btn">Смотреть рецепт</a>
+                </div>
+            </div>
+            <div class="recipe-card" data-id="2">
+                <div class="recipe-img" style="background-image: url('https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
+                    <div class="recipe-time"><i class="far fa-clock"></i> 45 мин</div>
+                </div>
+                <div class="recipe-content">
+                    <h3>Пицца Маргарита</h3>
+                    <div class="recipe-meta">
+                        <span><i class="fas fa-utensils"></i> Основные блюда</span>
+                        <span><i class="fas fa-fire"></i> Средняя сложность</span>
+                    </div>
+                    <p class="recipe-desc">Традиционная итальянская пицца с томатами, моцареллой и базиликом.</p>
+                    <a href="#" class="btn recipe-btn">Смотреть рецепт</a>
+                </div>
+            </div>
+            <div class="recipe-card" data-id="3">
+                <div class="recipe-img" style="background-image: url('https://images.unsplash.com/photo-1484980972926-edee96e0960d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80')">
+                    <div class="recipe-time"><i class="far fa-clock"></i> 20 мин</div>
+                </div>
+                <div class="recipe-content">
+                    <h3>Салат Цезарь</h3>
+                    <div class="recipe-meta">
+                        <span><i class="fas fa-utensils"></i> Салаты</span>
+                        <span><i class="fas fa-fire"></i> Легко</span>
+                    </div>
+                    <p class="recipe-desc">Классический салат с листьями салата, гренками, пармезаном и соусом цезарь.</p>
+                    <a href="#" class="btn recipe-btn">Смотреть рецепт</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipe Detail -->
+        <div class="recipe-detail" id="recipe-detail">
+            <button class="btn back-btn" id="back-btn"><i class="fas fa-arrow-left"></i> Назад к рецептам</button>
+            <div class="recipe-hero" id="detail-hero"></div>
+            <div class="recipe-hero-content">
+                <h2 id="detail-title">Паста Карбонара</h2>
+                <div class="recipe-info">
+                    <span><i class="far fa-clock"></i> 30 минут</span>
+                    <span><i class="fas fa-user-friends"></i> 4 порции</span>
+                    <span><i class="fas fa-fire"></i> Средняя сложность</span>
+                </div>
+            </div>
+            <div class="recipe-body">
+                <div class="ingredients">
+                    <h3>Ингредиенты</h3>
+                    <ul id="detail-ingredients">
+                        <li>400 г спагетти</li>
+                        <li>200 г гуанчиале или панчетты</li>
+                        <li>4 яичных желтка</li>
+                        <li>100 г тертого пармезана</li>
+                        <li>Свежемолотый черный перец</li>
+                        <li>Соль по вкусу</li>
+                    </ul>
+                </div>
+                <div class="instructions">
+                    <h3>Приготовление</h3>
+                    <ol id="detail-instructions">
+                        <li>Поставьте большую кастрюлю с подсоленной водой на огонь. Когда вода закипит, добавьте спагетти и варите согласно инструкции на упаковке до состояния аль денте.</li>
+                        <li>Тем временем нарежьте гуанчиале или панчетту небольшими кусочками. Обжарьте на сковороде до золотистого цвета.</li>
+                        <li>В миске взбейте яичные желтки с тертым пармезаном и большим количеством черного перца.</li>
+                        <li>Когда паста будет готова, сохраните 1/2 стакана воды от варки, затем слейте воду.</li>
+                        <li>Быстро смешайте горячую пасту с яичной смесью, добавив немного воды от варки, чтобы соус стал кремообразным.</li>
+                        <li>Добавьте обжаренную панчетту и перемешайте. Подавайте немедленно, посыпав дополнительным пармезаном и перцем.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>О нас</h3>
+                    <p>Мы собираем лучшие рецепты со всего мира, чтобы вы могли готовить вкусные и простые блюда каждый день.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Категории</h3>
+                    <ul>
+                        <li><a href="#">Завтраки</a></li>
+                        <li><a href="#">Супы</a></li>
+                        <li><a href="#">Основные блюда</a></li>
+                        <li><a href="#">Десерты</a></li>
+                        <li><a href="#">Салаты</a></li>
+                        <li><a href="#">Напитки</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Полезные ссылки</h3>
+                    <ul>
+                        <li><a href="#">О нас</a></li>
+                        <li><a href="#">Контакты</a></li>
+                        <li><a href="#">Политика конфиденциальности</a></li>
+                        <li><a href="#">Условия использования</a></li>
+                        <li><a href="#">Карта сайта</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Подписка</h3>
+                    <p>Подпишитесь на нашу рассылку, чтобы получать новые рецепты каждую неделю!</p>
+                    <div class="search-bar" style="margin-top: 15px;">
+                        <input type="email" placeholder="Ваш email">
+                        <button><i class="fas fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Вкусно и Просто. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Recipe data
+        const recipes = {
+            1: {
+                title: "Паста Карбонара",
+                image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                time: "30 мин",
+                servings: "4 порции",
+                difficulty: "Средняя сложность",
+                ingredients: [
+                    "400 г спагетти",
+                    "200 г гуанчиале или панчетты",
+                    "4 яичных желтка",
+                    "100 г тертого пармезана",
+                    "Свежемолотый черный перец",
+                    "Соль по вкусу"
+                ],
+                instructions: [
+                    "Поставьте большую кастрюлю с подсоленной водой на огонь. Когда вода закипит, добавьте спагетти и варите согласно инструкции на упаковке до состояния аль денте.",
+                    "Тем временем нарежьте гуанчиале или панчетту небольшими кусочками. Обжарьте на сковороде до золотистого цвета.",
+                    "В миске взбейте яичные желтки с тертым пармезаном и большим количеством черного перца.",
+                    "Когда паста будет готова, сохраните 1/2 стакана воды от варки, затем слейте воду.",
+                    "Быстро смешайте горячую пасту с яичной смесью, добавив немного воды от варки, чтобы соус стал кремообразным.",
+                    "Добавьте обжаренную панчетту и перемешайте. Подавайте немедленно, посыпав дополнительным пармезаном и перцем."
+                ]
+            },
+            2: {
+                title: "Пицца Маргарита",
+                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                time: "45 мин",
+                servings: "2-3 порции",
+                difficulty: "Средняя сложность",
+                ingredients: [
+                    "300 г муки",
+                    "200 мл теплой воды",
+                    "7 г сухих дрожжей",
+                    "1 ч.л. сахара",
+                    "1 ч.л. соли",
+                    "2 ст.л. оливкового масла",
+                    "200 г томатного соуса",
+                    "250 г моцареллы",
+                    "Свежий базилик",
+                    "Соль и перец по вкусу"
+                ],
+                instructions: [
+                    "Смешайте дрожжи, сахар и теплую воду. Дайте постоять 5 минут, пока не появится пена.",
+                    "В большой миске смешайте муку и соль. Добавьте дрожжевую смесь и оливковое масло. Замесите тесто.",
+                    "Накройте тесто и оставьте в теплом месте на 1 час, пока оно не удвоится в объеме.",
+                    "Разогрейте духовку до 250°C. Раскатайте тесто в круг диаметром 30 см.",
+                    "Выложите тесто на противень, смазанный маслом. Равномерно распределите томатный соус.",
+                    "Посыпьте нарезанной моцареллой. Выпекайте 10-12 минут до золотистой корочки.",
+                    "Достаньте пиццу, посыпьте свежим базиликом, сбрызните оливковым маслом и сразу подавайте."
+                ]
+            },
+            3: {
+                title: "Салат Цезарь",
+                image: "https://images.unsplash.com/photo-1484980972926-edee96e0960d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80",
+                time: "20 мин",
+                servings: "2 порции",
+                difficulty: "Легко",
+                ingredients: [
+                    "1 кочан романо",
+                    "100 г пармезана",
+                    "150 г гренок",
+                    "2 зубчика чеснока",
+                    "3 анчоуса",
+                    "1 яйцо",
+                    "2 ст.л. лимонного сока",
+                    "1 ч.л. дижонской горчицы",
+                    "100 мл оливкового масла",
+                    "Соль и перец по вкусу"
+                ],
+                instructions: [
+                    "Промойте и обсушите листья салата. Порвите их на крупные куски.",
+                    "Для соуса измельчите чеснок и анчоусы. Смешайте с горчицей, лимонным соком и яйцом.",
+                    "Медленно влейте оливковое масло, постоянно взбивая, до получения эмульсии.",
+                    "Посолите и поперчите соус по вкусу.",
+                    "В большой миске смешайте листья салата с соусом.",
+                    "Добавьте гренки и тертый пармезан. Аккуратно перемешайте.",
+                    "Подавайте сразу, украсив дополнительным пармезаном и черным перцем."
+                ]
+            }
+        };
+
+        // DOM elements
+        const recipeCards = document.querySelectorAll('.recipe-card');
+        const recipeDetail = document.getElementById('recipe-detail');
+        const backBtn = document.getElementById('back-btn');
+        const detailHero = document.getElementById('detail-hero');
+        const detailTitle = document.getElementById('detail-title');
+        const detailIngredients = document.getElementById('detail-ingredients');
+        const detailInstructions = document.getElementById('detail-instructions');
+
+        // Show recipe detail
+        recipeCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const recipeId = this.getAttribute('data-id');
+                const recipe = recipes[recipeId];
+                
+                if (recipe) {
+                    detailHero.style.backgroundImage = `url('${recipe.image}')`;
+                    detailTitle.textContent = recipe.title;
+                    
+                    // Update ingredients
+                    detailIngredients.innerHTML = '';
+                    recipe.ingredients.forEach(ingredient => {
+                        const li = document.createElement('li');
+                        li.textContent = ingredient;
+                        detailIngredients.appendChild(li);
+                    });
+                    
+                    // Update instructions
+                    detailInstructions.innerHTML = '';
+                    recipe.instructions.forEach(instruction => {
+                        const li = document.createElement('li');
+                        li.textContent = instruction;
+                        detailInstructions.appendChild(li);
+                    });
+                    
+                    // Show detail and hide list
+                    document.querySelector('.recipes').style.display = 'none';
+                    document.querySelector('.categories').style.display = 'none';
+                    document.querySelectorAll('.section-title').forEach(title => {
+                        title.style.display = 'none';
+                    });
+                    recipeDetail.classList.add('active');
+                }
+            });
+        });
+
+        // Back to recipes list
+        backBtn.addEventListener('click', function() {
+            recipeDetail.classList.remove('active');
+            document.querySelector('.recipes').style.display = 'grid';
+            document.querySelector('.categories').style.display = 'grid';
+            document.querySelectorAll('.section-title').forEach(title => {
+                title.style.display = 'block';
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.querySelector('.search-bar input');
+        const searchButton = document.querySelector('.search-bar button');
+        
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        function performSearch() {
+            const query = searchInput.value.toLowerCase().trim();
+            if (query) {
+                alert(`Поиск рецептов: "${query}"\n\nВ реальном приложении здесь бы отобразились результаты поиска.`);
+            }
+        }
+
+        // Category filtering
+        const categoryCards = document.querySelectorAll('.category-card');
+        
+        categoryCards.forEach(card => {
+            card.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                alert(`Показаны рецепты категории: "${category}"\n\nВ реальном приложении здесь бы отфильтровались рецепты по выбранной категории.`);
+            });
+        });
+    </script>
+</body>
+</html>
